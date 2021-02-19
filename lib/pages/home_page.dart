@@ -6,21 +6,14 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pagina 1'),
-        actions: [
-          IconButton(
-            icon: Icon( Icons.delete ), 
-            onPressed: () {
-            }
-          )
-        ],
+        title: Text('Products'),
       ),
       body: Center(
-              child: Text('No hay un usuario seleccionado'),
+        child: Text('No hay un usuario seleccionado'),
       ),
 
      floatingActionButton: FloatingActionButton(
-       child: Icon( Icons.accessibility_new ),
+       child: Icon( Icons.shopping_cart ),
        onPressed: () => Navigator.pushNamed(context, 'details')
      ),
    );

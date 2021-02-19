@@ -7,21 +7,14 @@ class DetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('details'),
-        actions: [
-          IconButton(
-            icon: Icon( Icons.delete ), 
-            onPressed: () {
-            }
-          )
-        ],
       ),
       body: Center(
-              child: Text('No hay un usuario seleccionado'),
+        child: Text('No hay un usuario seleccionado'),
       ),
 
      floatingActionButton: FloatingActionButton(
        child: Icon( Icons.accessibility_new ),
-       onPressed: () => Navigator.pushNamed(context, 'home')
+       onPressed: () => Navigator.pop(context)
      ),
    );
   }

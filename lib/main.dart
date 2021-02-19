@@ -4,7 +4,7 @@ import 'package:prueba_bloc/pages/details_page.dart';
 import 'package:prueba_bloc/pages/home_page.dart';
 
 
-import 'app/bloc/product/products_bloc.dart';
+import 'app/bloc/product/product_bloc.dart';
  
 void main() => runApp(MyApp());
  
@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
         title: 'Material App',
         initialRoute: 'home',
         routes: {
-          'home': ( _ ) => HomePage(),
-          'details': ( _ ) => DetailsPage(),
+          'home'    : ( _ ) => HomePage(),
+          'details' : ( _ ) => DetailsPage(),
         },
       ),
     );
