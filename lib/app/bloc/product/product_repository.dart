@@ -20,7 +20,7 @@ class ProductRepository {
       response = await this.dio.get('/products.json');
     } catch (e) {
       return FetchResponse(
-      code: response.statusCode, 
+      code: response.statusCode,
       message: "not work"
     );
     }

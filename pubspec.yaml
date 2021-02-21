@@ -31,7 +31,9 @@ dependencies:
   equatable: ^1.2.6
   dio: ^3.0.10
   flutter_bloc: ^6.1.2
+  equatable: ^1.2.6
   bloc_test: ^7.1.0
+  animate_do: ^1.7.5
   bloc: ^6.1.1
   connectivity: ^2.0.2
 

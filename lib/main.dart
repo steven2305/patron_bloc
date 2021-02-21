@@ -9,6 +9,8 @@ import 'app/bloc/product/product_bloc.dart';
 void main() => runApp(MyApp());
  
 class MyApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
