@@ -22,8 +22,8 @@ class _HomePageState extends State<HomePage> {
   
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => BlocBuilder<ProductBloc, ProductState>( 
+      builder: ( _ , state) => Scaffold(
       appBar: AppBar(
         title: Text('Products'),
       ),
@@ -41,12 +41,14 @@ class _HomePageState extends State<HomePage> {
         },
       ),
 
-     floatingActionButton: FloatingActionButton(
-       child: Icon( Icons.shopping_cart ),
-       onPressed: () => Navigator.pushNamed(context, 'details')
-     ),
-   );
-  }
+     floatingActionButton: state.cart != null ?  FadeInDown(
+        child: FloatingActionButton(
+          child: Icon( Icons.shopping_cart ),
+          onPressed: () => Navigator.pushNamed(context, 'carts')
+        ),
+     ) : Container(),
+   )
+  );
 }
 class _CardsWidget extends StatelessWidget {
 
@@ -68,6 +70,8 @@ class Items extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productBloc = BlocProvider.of<ProductBloc>(context);
+
     double containerPadding = 20;
     double containerBorderRadius = 15;
 
@@ -140,14 +144,20 @@ class Items extends StatelessWidget {
                                   children: [
                                     TextSpan(text: "Productos disponibles: "),
                                     TextSpan(
-                                        text: '${this.product.sku}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700))
+                                      text: '${this.product.sku}',
+                                      style: TextStyle(fontWeight: FontWeight.w700)
+                                    )
                                   ]),
                               ),
                           ),
                           InkWell(
-                            onTap: (){},
+                            onTap: (){
+                              if(this.product.quantity == this.product.sku) return;
+                              final Product product = this.product.copyWith(
+                                quantity: this.product.quantity + 1
+                              );
+                              productBloc.add(AddToCar(product));
+                            },
                             child: Row(
                               children: [
                                 Icon(Icons.add),

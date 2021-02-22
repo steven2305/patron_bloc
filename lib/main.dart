@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prueba_bloc/pages/details_page.dart';
+import 'package:prueba_bloc/pages/carts_page.dart';
 import 'package:prueba_bloc/pages/home_page.dart';
 
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         initialRoute: 'home',
         routes: {
           'home'    : ( _ ) => HomePage(),
-          'details' : ( _ ) => DetailsPage(),
+          'carts' : ( _ ) => CartsPage(),
         },
       ),
     );
