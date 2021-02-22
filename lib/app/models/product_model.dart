@@ -6,7 +6,7 @@ class Product {
   final bool active;
   final int sku;
   final int price;
-  final String idCar;
+  final String idCart;
   final int quantity;
 
   Product({
@@ -16,7 +16,7 @@ class Product {
     this.active = false,
     this.sku = 0,
     this.price = 0,
-    this.idCar = '',
+    this.idCart = '',
     this.quantity = 0,
   });
 
@@ -27,7 +27,7 @@ class Product {
     bool active,
     int sku,
     int price,
-    String idCar,
+    String idCart,
     int quantity,
   }) => Product(
     id: id ?? this.id,
@@ -36,7 +36,7 @@ class Product {
     active: active ?? this.active,
     sku: sku ?? this.sku,
     price: price ?? this.price,
-    idCar: idCar ?? this.idCar,
+    idCart: idCart ?? this.idCart,
     quantity: quantity ?? this.quantity,
   );
 

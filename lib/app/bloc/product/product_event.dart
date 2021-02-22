@@ -12,4 +12,11 @@ class AddToCar extends ProductEvent {
 
 }
 
+class RemoveProduct extends ProductEvent {
+
+  final Product product;
+  RemoveProduct(this.product);
+
+}
+
 

@@ -13,11 +13,11 @@ class ProductRepository {
   });
 
 
-  Future<FetchResponse<List<Product>>> getProducts(String cartID) async {
+  Future<Map<String, dynamic>> getProducts(String cartID) async {
 
     if(cartID.length == 0) {
-      final FetchResponse<String> resp = await this.createCart();
-      cartID = resp.data ?? '';
+      final FetchResponse<String> responseCart = await this.createCart();
+      cartID = responseCart.data ?? '';
     }
 
     Response response;
@@ -25,16 +25,16 @@ class ProductRepository {
     try {
       response = await this.dio.get('/products.json');
     } catch (e) {
-      return FetchResponse(
-      code: response.statusCode,
-      message: "not work"
-    );
+      return {
+      "code": response.statusCode,
+      "message": "not work"
+    };
     }
 
-    if(response.statusCode != 200 && response.statusCode != 201) return FetchResponse(
-      code: response.statusCode, 
-      message: "not work"
-    );
+    if(response.statusCode != 200 && response.statusCode != 201) return {
+      "code": response.statusCode,
+      "message": "not work"
+    };
 
     final Map<String, dynamic> data = response.data;
 
@@ -56,20 +56,21 @@ class ProductRepository {
       products.add(product);
     });
 
-    return FetchResponse(data: products, code: response.statusCode);
+    return {
+      'ok': true,
+      'products': products,
+      'cartId': cartID
+    };
   }
 
-  Future<Map<String, dynamic>> updateProcuctCart(String id, Map<String, dynamic> body) async {
+  Future<Map<String, dynamic>> updateProductCart(String id, Map<String, dynamic> jsonC) async {
 
     Response response;
 
-    final String data = json.encode(body);
+    final String data = json.encode(jsonC);
 
     try {
-      response = await this.dio.put(
-        '/product_cars/$id.json',
-        data: data
-      );
+      response = await this.dio.put('/product_cars/$id.json', data: data);
     } catch (e) {
       return {
       "code": response.statusCode,

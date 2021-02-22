@@ -30,16 +30,26 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
 
       final Product product = await this.updateProductOnDB(event.product);
 
-      yield this.updateCar(product, 0);
+      yield this.updateProductsCart(product, 0);
+    }
+    else if(event is RemoveProduct) {
+      
+      yield this.removeProduct(event);
+      
+      final Product product = await this.updateProductOnDB(event.product);
+
+      yield this.updateProductsCart(product, 0);
     }
 
   }
 
   Future<ProductState> getProducts() async {
 
-    final FetchResponse<List<Product>> response = await this.repository.getProducts(this.cartId);
+    final Map<String, dynamic> response = await this.repository.getProducts(this.cartId);
 
-    final List<Product> products = response.data;
+    this.cartId = response['cartId'];
+
+    final List<Product> products = response['products'];
 
     return this.state.copyWith(
       products: products,
@@ -60,18 +70,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
           quantity: event.product.quantity,
         );
 
-        return this.updateCar(product, index);
+        return this.updateProductsCart(product, index);
 
       } else {
-        return this.updateCar(event.product, -1);
+        return this.updateProductsCart(event.product, -1);
       }
 
     } else {
-      return this.updateCar(event.product, -1);
+      return this.updateProductsCart(event.product, -1);
     }
   }
 
-  ProductState updateCar(Product product, int index) {
+  ProductState updateProductsCart(Product product, int index) {
 
     List<Product> cartList = [];
 
@@ -109,9 +119,30 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
     );
   }
 
+  ProductState removeProduct(RemoveProduct event) {
+
+  Product product;
+
+  if(state.cart != null) {
+    
+    final int index = state.cart.indexWhere((p) => p.id == event.product.id);
+
+    if(index > -1) {
+
+      product = this.state.cart[index].copyWith(
+        quantity: event.product.quantity,
+      );
+
+      return this.updateProductsCart(product, index);
+    }
+  }
+  return this.state;
+    
+  }
+
   Future<Product> updateProductOnDB(Product product) async {
 
-    if(product.idCar.length == 0) {
+    if(product.idCart.length == 0) {
 
       final FetchResponse<String> response = await this.repository.addToCart({
         'cart_id': this.cartId,
@@ -120,12 +151,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
       });
 
       product = product.copyWith(
-        idCar: response.data
+        idCart: response.data
       );
       
     } else {
-      await this.repository.updateProcuctCart(
-        product.idCar,
+      await this.repository.updateProductCart(product.idCart,
         {
           'cart_id': this.cartId,
           'product_id': product.id,
