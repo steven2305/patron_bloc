@@ -9,18 +9,4 @@ final BaseOptions baseOptions = BaseOptions(
   contentType: 'application/json',
 );
 
-final Map<String, dynamic> noInternetMessage = {
-  'ok': false,
-  'message': 'no-wifi'
-};
 
-final Map<String, dynamic> internalErrorMessage = {
-  'ok': false,
-  'message': 'internal'
-};
-
-enum RequestStatus {
-  loading,
-  done,
-  error
-}

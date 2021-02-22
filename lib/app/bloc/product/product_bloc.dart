@@ -28,7 +28,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
 
       yield this.addToCart(event);
 
-      final Product product = await this.updateProductOnDB(event.product);
+      final Product product = await this.uploadProductCart(event.product);
 
       yield this.updateProductsCart(product, 0);
     }
@@ -36,7 +36,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
       
       yield this.removeProduct(event);
       
-      final Product product = await this.updateProductOnDB(event.product);
+      final Product product = await this.uploadProductCart(event.product);
 
       yield this.updateProductsCart(product, 0);
     }
@@ -145,7 +145,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
     
   }
 
-  Future<Product> updateProductOnDB(Product product) async {
+  Future<Product> uploadProductCart(Product product) async {
 
     if(product.idCart.length == 0) {
 

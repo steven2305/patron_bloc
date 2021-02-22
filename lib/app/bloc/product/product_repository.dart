@@ -15,11 +15,6 @@ class ProductRepository {
 
   Future<Map<String, dynamic>> getProducts(String cartID) async {
 
-    if(cartID.length == 0) {
-      final FetchResponse<String> responseCart = await this.createCart();
-      cartID = responseCart.data ?? '';
-    }
-
     Response response;
 
     try {
@@ -36,11 +31,9 @@ class ProductRepository {
       "message": "not work"
     };
 
-    final Map<String, dynamic> data = response.data;
-
     List<Product> products = [];
 
-    data.forEach((id, value) {
+    response.data.forEach((id, value) {
 
       final Map<String, dynamic> json = {
         'id': id,
@@ -55,6 +48,11 @@ class ProductRepository {
 
       products.add(product);
     });
+
+    if(cartID.length == 0) {
+      final FetchResponse<String> responseCart = await this.createCart();
+      cartID = responseCart.data ?? '';
+    }
 
     return {
       'code': true,
