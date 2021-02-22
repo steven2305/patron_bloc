@@ -57,7 +57,7 @@ class ProductRepository {
     });
 
     return {
-      'ok': true,
+      'code': true,
       'products': products,
       'cartId': cartID
     };
@@ -86,7 +86,35 @@ class ProductRepository {
     final Product product = Product.fromJson(response.data);
 
    return {
-      'ok': true,
+      'code': true,
+      'product': product
+    };
+  }
+
+  Future<Map<String, dynamic>> updateProduct(String id, Map<String, dynamic> jsonC) async {
+
+    Response response;
+
+    final String data = json.encode(jsonC);
+
+    try {
+      response = await this.dio.put('/products/$id.json',data: data);
+    } catch (e) {
+      return {
+      "code": response.statusCode,
+      "message": "not work"
+    };
+    }
+
+    if(response.statusCode != 200 && response.statusCode != 201) return {
+      "code": response.statusCode, 
+      "message": "not work"
+    };
+
+    final Product product = Product.fromJson(response.data);
+
+   return {
+      'code': true,
       'product': product
     };
   }
@@ -147,6 +175,36 @@ class ProductRepository {
     );
 
     return FetchResponse(data: response.data['name'], code: response.statusCode);
+  }
+
+  Future<FetchResponse<bool>> completedOrder(String id) async {
+
+    Response response;
+
+    final Map<String, dynamic> body = {
+      'status': 'completed'
+    };
+
+    final String data = json.encode(body);
+
+    try {
+      response = await this.dio.put('/carts/$id.json', data: data);
+    } catch (e) {
+      return FetchResponse(
+      code: response.statusCode,
+      message: "not work"
+    );
+    }
+
+    if(response.statusCode != 200 && response.statusCode != 201) return FetchResponse(
+      code: response.statusCode, 
+      message: "not work"
+    );
+
+    return FetchResponse(
+      code: response.statusCode,
+      message: "order sent"
+    );
   }
 
 }

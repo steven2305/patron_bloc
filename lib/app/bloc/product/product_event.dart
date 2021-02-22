@@ -18,5 +18,6 @@ class RemoveProduct extends ProductEvent {
   RemoveProduct(this.product);
 
 }
+class UploadOrder extends ProductEvent {}
 
 

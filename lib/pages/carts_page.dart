@@ -219,6 +219,7 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productBloc = BlocProvider.of<ProductBloc>(context);
     return Container(
       margin: EdgeInsets.only(left: 35, bottom: 25),
       child: Column(
@@ -232,7 +233,7 @@ class BottomBar extends StatelessWidget {
               color: Colors.grey[700],
             ),
           ),
-          nextButtonBar(),
+          sendButtonBar(productBloc),
         ],
       ),
     );
@@ -267,30 +268,35 @@ class BottomBar extends StatelessWidget {
     return totalAmount.toStringAsFixed(2);
   }
 
-  Container nextButtonBar() {
+  Container sendButtonBar(productBloc) {
     return Container(
       margin: EdgeInsets.only(right: 25),
       padding: EdgeInsets.all(25),
       decoration: BoxDecoration(
           color: Colors.amber, borderRadius: BorderRadius.circular(15)),
-      child: Row(
-        children: <Widget>[
-          Text(
-            "15-25 min",
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              fontSize: 14,
+      child: InkWell(
+        child: Row(
+          children: <Widget>[
+            Text(
+              "15-25 min",
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 14,
+              ),
             ),
-          ),
-          Spacer(),
-          Text(
-            "Send order",
-            style: TextStyle(
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
+            Spacer(),
+            Text(
+              "Send order",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 16,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      onTap: (){
+        productBloc.add(UploadOrder());
+      },
       ),
     );
   }

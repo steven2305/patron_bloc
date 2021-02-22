@@ -40,6 +40,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
 
       yield this.updateProductsCart(product, 0);
     }
+    else if(event is UploadOrder) {
+
+      yield await this.uploadOrder();
+    }
 
   }
 
@@ -53,6 +57,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
 
     return this.state.copyWith(
       products: products,
+      cart: []
     );
   }
 
@@ -166,8 +171,26 @@ class ProductBloc extends Bloc<ProductEvent, ProductState>{
 
     return product;
   }
+  
+  Future<ProductState> uploadOrder() async {
 
+    await this.repository.completedOrder(this.cartId);
 
+    for(Product p in this.state.cart) {
+      await this.repository.updateProduct(
+        p.id,
+        {
+          'active': p.active,
+          'name': p.name,
+          'picture': p.picture,
+          'price': p.price,
+          'sku': p.sku - p.quantity,
+        }
+      );
+    }
+    
+    return this.getProducts();
+  }
 
 
 }
